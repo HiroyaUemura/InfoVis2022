@@ -18,7 +18,7 @@
           .style("fill", function(d){ return d.color; })
 
           .append("text")
-          .attr("x", function(d){ return d.x; })
+          .attr("x", function(d){ return d.x - 50; })
 	        .attr("y", function(d){ return d.y; })
           .text(function(d){ return d.text; })
           .attr("font-size","50px");
