@@ -11,6 +11,8 @@
 		.data(data)
 	        .enter()
           .append("text")
+          .attr("x", function(d){ return d.x - 70; })
+	        .attr("y", function(d){ return d.y - 70; })
           .style("text", function(d){ return d.text; })
           //.style("font-weight","bold",function(d){ return d.text; });
 	        .append("rect")
