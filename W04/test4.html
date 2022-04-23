@@ -7,13 +7,13 @@
 	<script>
 	 var svg = d3.select("body").append("svg");
 	 d3.csv("https://hiroyauemura.github.io/InfoVis2022/W04/test4.csv", function(data){
-	     svg.selectAll("text")
+	     svg.selectAll("span")
 		.data(data)
 	        .enter()
-          .append("text")
+          .append("span")
           //.attr("x", function(d){ return d.x; })
 	        //.attr("y", function(d){ return d.y; })
-          .text("text", function(d){ return d.text; })
+          .text("span", function(d){ return d.text; })
           .style("font-size","50px");
        	  .style("font-weight","bold");
 	 } );
