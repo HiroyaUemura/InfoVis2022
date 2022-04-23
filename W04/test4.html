@@ -13,7 +13,7 @@
           .append("text")
           .attr("x", function(d){ return d.x; })
 	        .attr("y", function(d){ return d.y; })
-          .text(d.text);
+          .text("text", function(d){ return d.text; });
           .style("font-size","50px");
        	  .style("font-weight","bold");
 	 } );
