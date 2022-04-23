@@ -7,7 +7,7 @@
 	<script>
 	 var svg = d3.select("body").append("svg");
 	 d3.csv("https://hiroyauemura.github.io/InfoVis2022/W04/w04_task2.csv", function(data){
-	     svg.selectAll("text","rect")
+	     svg.selectAll("rect")
 		.data(data)
 	        .enter()
           .append("rect")
@@ -17,12 +17,14 @@
 	        .attr("height", function(d){ return d.height; })
           .style("fill", function(d){ return d.color; })
 
+       svg.selectAll("text")
+    .data(data)
+          .enter()
           .append("text")
           .attr("x", function(d){ return d.x - 70; })
 	        .attr("y", function(d){ return d.y; })
           .text(function(d){ return d.text; })
           .attr("font-size","50px");
-       	  .attr("font-weight","bold");
 	 } );
 	</script>
     </body>
