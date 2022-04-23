@@ -1,4 +1,4 @@
-label,width,height,x,y,color
-'Label 1',100,20,30,10,red
-'Label 2',50,20,30,40,blue
-'Label 3',80,20,30,70,green
+text,width,height,x,y,color
+"Label 1",100,20,80,10,red
+"Label 2",50,20,80,40,blue
+"Label 3",80,20,80,70,green
