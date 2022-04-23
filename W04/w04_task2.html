@@ -22,9 +22,9 @@
           .enter()
           .append("text")
           .attr("x", function(d){ return d.x - 80; })
-	        .attr("y", function(d){ return d.y; })
+	        .attr("y", function(d){ return d.y + 10; })
           .text(function(d){ return d.text; })
-          .attr("font-size","10px");
+          .attr("font-size","20px");
 	 } );
 	</script>
     </body>
