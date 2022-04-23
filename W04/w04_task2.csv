@@ -1,4 +1,4 @@
-text,width,height,x,y,color
-a,100,20,80,10
-b,50,20,80,40,blue
-c,80,20,80,70,green
+width,height,x,y,color
+100,20,80,10
+50,20,80,40,blue
+80,20,80,70,green
