@@ -17,10 +17,10 @@
 	        .attr("height", function(d){ return d.height; })
           .style("fill", function(d){ return d.color; })
 
-          //.append("text")
-          //.attr("x", function(d){ return d.x - 70; })
-	        //.attr("y", function(d){ return d.y - 70; })
-          //.text(function(d){ return d.text; })
+          .append("text")
+          .attr("x", function(d){ return d.x; })
+	        .attr("y", function(d){ return d.y; })
+          .text(function(d){ return d.text; })
           //.style("font-size","50px");
        	  //.style("font-weight","bold");
 	 } );
