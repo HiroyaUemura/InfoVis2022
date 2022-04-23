@@ -1,4 +1,4 @@
-label,width,height,padding,color
-'Label 1',100,20,10,red
-'Label 2',50,20,10,blue
-'Label 3',80,20,10,green
+label,width,height,x,y,color
+'Label 1',100,20,30,10,red
+'Label 2',50,20,30,40,blue
+'Label 3',80,20,30,70,green
