@@ -21,7 +21,7 @@
     .data(data)
           .enter()
           .append("text")
-          .attr("x", function(d){ return d.x - 80; })
+          .attr("x", function(d){ return d.x; })
 	        .attr("y", function(d){ return d.y; })
           .text(function(d){ return d.text; })
           //.attr("font-size","20px");
