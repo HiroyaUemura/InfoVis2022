@@ -1,4 +1,4 @@
-text,width,height,x,y,color
-Label1,100,20,90,10,red
-Label2,50,20,90,40,blue
-Label3,80,20,90,70,green
+text,width,height,x,y,tx,ty,color
+Label1,100,20,90,10,15,20,red
+Label2,50,20,90,40,15,50,blue
+Label3,80,20,90,70,15,80,green
