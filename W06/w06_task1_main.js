@@ -23,7 +23,7 @@ class ScatterPlot {
             parent: config.parent,
             width: config.width || 256,
             height: config.height || 256,
-            margin: config.margin || {top:10, right:10, bottom:10, left:10}
+            margin: config.margin || {top:10, right:10, bottom:20, left:20}
         }
         this.data = data;
         this.init();
@@ -58,7 +58,7 @@ class ScatterPlot {
             .ticks(6);
 
         self.yaxis_group = self.chart.append('g')
-            .attr('transform', `translate(0, ${self.inner_width})`);
+            .attr('transform', `translate(0, ${self.inner_height})`);
     }
 
     update() {
