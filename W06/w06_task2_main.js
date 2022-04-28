@@ -4,9 +4,9 @@ d3.csv("https://hiroyauemura.github.io/InfoVis2022/W04/data.csv")
 
         var config = {
             parent: '#drawing_region',
-            width: 256,
-            height: 256,
-            margin: {top:30, right:30, bottom:30, left:30}
+            width: 512,
+            height: 512,
+            margin: {top:100, right:50, bottom:50, left:50}
         };
 
         const scatter_plot = new ScatterPlot( config, data );
@@ -21,8 +21,8 @@ class ScatterPlot {
     constructor( config, data ) {
         this.config = {
             parent: config.parent,
-            width: config.width || 256,
-            height: config.height || 256,
+            width: config.width || 512,
+            height: config.height || 512,
             margin: config.margin || {top:10, right:10, bottom:10, left:10}
         }
         this.data = data;
@@ -89,10 +89,10 @@ class ScatterPlot {
             .attr("r", d => d.r );
 
         self.xaxis_group
-            .call( self.xaxis );
+            .call( self.xaxis )
             .append("text")
             .attr("fill", "black")
-            .attr("x", self.inner_width / 2 + self.config.margin.left)
+            .attr("x", self.inner_width / 2 + 20)
             .attr("y", 35)
             .attr("text-anchor", "middle")
             .attr("font-size", "10pt")
@@ -100,16 +100,25 @@ class ScatterPlot {
             .text("Label 1");
 
         self.yaxis_group
-            .call( self.yaxis );
+            .call( self.yaxis )
             .append("text")
             .attr("fill", "black")
             .attr("text-anchor", "middle")
-            .attr("x", -self.inner_height / 2 - self.config.margin.top)
+            .attr("x", -self.inner_height / 2 + 20)
             .attr("y", -35)
             .attr("transform", "rotate(-90)")
-            .attr("font-weight", "middle")
             .attr("font-size", "10pt")
+            .attr("font-weight", "middle")
             .text("Label 2");
+
+        self.chart.append("text")
+            .attr("fill", "blue")
+            .attr("text-anchor", "top")
+            .attr("x", self.inner_width / 2 - 40)
+            .attr("y", -40)
+            .attr("font-size", "20px")
+            .attr("font-weight", "middle")
+            .text("Chart Title");
 
     }
 }
