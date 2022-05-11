@@ -9,8 +9,8 @@ d3.csv("https://hiroyauemura.github.io/InfoVis2022/W08/data.csv")
             margin: {top:10, right:10, bottom:20, left:60}
         };
 
-        const scatter_plot = new ScatterPlot( config, data );
-        scatter_plot.update();
+        const barchart = new BarChart( config, data );
+        barchart.update();
     })
     .catch( error => {
         console.log( error );
@@ -54,7 +54,7 @@ class BarChart {
             .tickSizeOuter(0);
 
         self.xaxis_group = self.chart.append('g')
-            .attr('transform', `translate(0, ${self.inner_height})`);
+            .attr('transform', `translate(0, ${self.inner_height})`)
             .call( xaxis );
 
         self.yaxis = d3.axisLeft( self.yscale )
