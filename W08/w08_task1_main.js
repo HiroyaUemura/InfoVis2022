@@ -1,6 +1,6 @@
 d3.csv("https://hiroyauemura.github.io/InfoVis2022/W08/data.csv")
     .then( data => {
-        data.forEach( d => { d.label = +d.label; d.value = +d.value; });
+        data.forEach( d => {  d.value = +d.value; });
 
         var config = {
             parent: '#drawing_region',
@@ -54,20 +54,22 @@ class BarChart {
             .tickSizeOuter(0);
 
         self.xaxis_group = self.chart.append('g')
-            .attr('transform', `translate(0, ${self.inner_height})`);
-            //.call( xaxis );
+            .attr('transform', `translate(0, ${self.inner_height})`)
+            .call( self.xaxis );
 
         self.yaxis = d3.axisLeft( self.yscale )
             .tickSizeOuter(0);
 
-        self.yaxis_group = self.chart.append('g');
-            //.call( yaxis );
+        self.yaxis_group = self.chart.append('g')
+            .call( self.yaxis );
     }
 
     update(){
       let self = this;
-      //self.xscale.domain([0, d3.max(self.data, d => d.value)]);
-      //self.yscale.domain(self.data.map(d => d.label);
+
+      self.xscale.domain([0, d3.max(self.data, d => d.value)]);
+      self.yscale.domain(self.data.map(d => d.label));
+
       self.render();
     }
 
