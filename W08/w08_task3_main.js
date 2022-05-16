@@ -6,8 +6,8 @@ d3.csv("https://hiroyauemura.github.io/InfoVis2022/W08/data.csv")
             parent: '#drawing_region',
             width: 256,
             height: 256,
-            radius: Math.min( width, height ) / 2,
-            margin: {top:10, right:10, bottom:10, left:10}
+            radius: 128,
+            margin: {top:0, right:0, bottom:0, left:0}
         };
 
         const piechart = new PieChart( config, data );
@@ -23,8 +23,8 @@ class PieChart {
             parent: config.parent,
             width: config.width || 256,
             height: config.height || 256,
-            radius: Math.min( width, height ) / 2,
-            margin: config.margin || {top:10, right:10, bottom:10, left:10}
+            radius: config.radius || 128,
+            margin: config.margin || {top:0, right:0, bottom:0, left:0}
         }
         this.data = data;
         this.init();
@@ -32,24 +32,26 @@ class PieChart {
 
     init(){
         let self = this;
+
         self.svg = d3.select( self.config.parent )
             .attr('width', self.config.width)
-            .attr('height', self.config.height);
+            .attr('height', self.config.height)
             .append('g')
-            .attr('transform', `translate(${width/2}, ${height/2})`);
+            .attr('transform', `translate(${self.config.width/2}, ${self.config.height/2})`);
 
         self.pie = d3.pie()
             .value( d => d.value );
 
         self.arc = d3.arc()
-            .innerRadius(0)
-            .outerRadius(radius);
+            .innerRadius(50)
+            .outerRadius(self.config.radius);
 
-        self.chart = self.svg.append('g')
-            .attr('transform', `translate(${self.config.margin.left}, ${self.config.margin.top})`);
+  //      self.text = d3.arc()
+  //          .innerRadius(self.config.radius - 30)
+  //          .outerRadius(self.config.radius - 30);
 
-        self.inner_width = self.config.width - self.config.margin.left - self.config.margin.right;
-        self.inner_height = self.config.height - self.config.margin.top - self.config.margin.bottom;
+        self.color = d3.scaleOrdinal()
+            .range(["#DC3912", "#3366CC", "#109618", "#FF9900", "#990099"]);
     }
 
     update(){
@@ -60,14 +62,27 @@ class PieChart {
     render(){
       let self = this;
 
-      self.chart.selectAll('pie')
-          .data(self.pie(data))
+      self.pieGroup = self.svg.selectAll('pie')
+          .data(self.pie(self.data))
           .enter()
+          .append('g')
+          .attr('class', 'pie');
+
+      self.pieGroup
           .append('path')
-          .attr('d', arc)
-          .attr('fill', 'black')
+          .attr('d', self.arc)
+          .attr('fill', function(d) { return self.color(d.index) })
           .attr('stroke', 'white')
           .style('stroke-width', '2px');
+
+      self.pieGroup
+          .append("text")
+          .attr("fill", "black")
+          .attr("transform", function(d) { return "translate(" + self.arc.centroid(d) + ")"; })
+          .attr("dy", "5px")
+          .attr("font", "10px")
+          .attr("text-anchor", "middle")
+          .text(function(d) { return d.data.label; });
 
     }
 }
