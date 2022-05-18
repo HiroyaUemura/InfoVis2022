@@ -91,10 +91,12 @@ class ScatterPlot {
             .attr("r", d => d.r );
 
         circles
-            .on('mouseover', (e,d) => {
+            .on('mouseover', function(e,d) {
                   d3.select('#tooltip')
                       .style('opacity', 1)
                       .html(`<div class="tooltip-label">Position</div>(${d.x}, ${d.y})`);
+                  d3.select(this)
+                      .style("fill", "salmon");
             })
             .on('mousemove', (e) => {
                 const padding = 10;
@@ -102,9 +104,11 @@ class ScatterPlot {
                     .style('left', (e.pageX + padding) + 'px')
                     .style('top', (e.pageY + padding) + 'px');
             })
-            .on('mouseleave', () => {
+            .on('mouseleave', function() {
                 d3.select('#tooltip')
                     .style('opacity', 0);
+                d3.select(this)
+                    .style("fill", "black");
             });
 
         self.xaxis_group
@@ -116,7 +120,7 @@ class ScatterPlot {
             .attr("text-anchor", "middle")
             .attr("font-size", "10pt")
             .attr("font-weight", "middle")
-            .text("Label 1");
+            .text("X Label");
 
         self.yaxis_group
             .call( self.yaxis )
@@ -128,7 +132,7 @@ class ScatterPlot {
             .attr("transform", "rotate(-90)")
             .attr("font-size", "10pt")
             .attr("font-weight", "middle")
-            .text("Label 2");
+            .text("Y Label");
 
         self.chart.append("text")
             .attr("fill", "blue")
