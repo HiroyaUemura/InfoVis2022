@@ -78,12 +78,15 @@ class BarChart {
 
       self.chart.selectAll("rect")
           .data(self.data)
-          .enter()
-          .append("rect")
+          .join("rect")
           .attr("x", 0)
           .attr("y", d => self.yscale(d.label))
           .attr("width", d => self.xscale(d.value))
-          .attr("height", self.yscale.bandwidth());
+          .attr("height", self.yscale.bandwidth())
+          .attr("fill", "steelblue")
+          .transition()
+          .duration(2000)
+          .attr("fill", "salmon");
 
       self.xaxis_group
           .call( self.xaxis );
@@ -91,9 +94,24 @@ class BarChart {
           .call( self.yaxis );
 
       d3.select('#reverse')
-        .on('click', d => {
-            data.reverse();
-            update(data);
-        });    
+          .on('click', d => {
+             self.data.reverse();
+             self.update(self.data);
+          });
+
+      d3.select('#dataSort')
+          .on('change', function(){
+        		var s;
+        		if( this.checked ){
+        			s = self.data.sort(
+        				(a,b) => (b.value < a.value ? -1 : 1 ));
+        		}else{
+        			s = self.data.sort(
+        				(a,b) => (a.value < b.value ? -1 : 1 ));
+        		}
+            var sortResult = s.map(function(d,i){ return d.label;});
+            self.update(self.data);
+          }
+        );
     }
 }
