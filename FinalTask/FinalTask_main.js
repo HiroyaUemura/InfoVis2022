@@ -1,16 +1,33 @@
+let bar_chart;
+let japan_map;
+
 d3.csv("https://hiroyauemura.github.io/InfoVis2022/FinalTask/data.csv")
     .then( data => {
-        data.forEach( d => {  d.paper = +d.paper;  d.digital = +d.digital; });
+        data.forEach( d => {
+           d.pref = +d.pref;
+           d.all = +d.all;
+           d.male = +d.male;
+           d.female = +d.female;
+        });
 
-        var config = {
-            parent: '#drawing_region',
+        let config_BarChart{
+            parent: '#drawing_BarChart',
             width: 512,
             height: 512,
-            margin: {top:10, right:10, bottom:30, left:60}
+            margin: {top:10, right:10, bottom:20, left:60}
+        };
+        let config_map{
+            parent: '#drawing_Map',
+            width: 512,
+            height: 512,
+            margin: {top:10, right:10, bottom:20, left:60}
         };
 
-        const barchart = new BarChart( config, data );
-        barchart.update();
+        bar_chart = new BarChart( config_BarChart, data );
+        bar_chart.update();
+
+        japan_map = new Map( config_map, data );
+
     })
     .catch( error => {
         console.log( error );
@@ -20,9 +37,9 @@ class BarChart {
     constructor( config, data ) {
         this.config = {
             parent: config.parent,
-            width: config.width || 512,
-            height: config.height || 512,
-            margin: config.margin || {top:10, right:10, bottom:30, left:60}
+            width: config.width || 256,
+            height: config.height || 256,
+            margin: config.margin || {top:10, right:10, bottom:20, left:60}
         }
         this.data = data;
         this.init();
@@ -37,73 +54,60 @@ class BarChart {
         self.chart = self.svg.append('g')
             .attr('transform', `translate(${self.config.margin.left}, ${self.config.margin.top})`);
 
-        self.stackGen = d3.stack().keys(["paper", "digital"]);
-
-        self.series = self.stackGen(self.data);
-    //    self.series = d3.stack().keys(["paper", "digital"])(self.data);
-
-        self.color = d3.scaleOrdinal()
-            .domain(self.series.map(d => d.key))
-            .range(d3.schemeCategory10.slice(0, self.series.length))
-            .unknown("#ccc");
-
         self.inner_width = self.config.width - self.config.margin.left - self.config.margin.right;
         self.inner_height = self.config.height - self.config.margin.top - self.config.margin.bottom;
 
-        self.xscale = d3.scaleBand()
-            .domain(self.data.map(d => d.year))
-            .range([0, self.inner_width])
+        self.xscale = d3.scaleLinear()
+            .domain([0, d3.max(self.data, d => d.all)])
+            .range([0, self.inner_width]);
+
+        self.yscale = d3.scaleBand()
+            .domain(self.data.map(d => d.pref))
+            .range([0, self.inner_height])
             .paddingInner(0.1);
 
-        self.yscale = d3.scaleLinear()
-            .domain([0, d3.max(self.series, d => d3.max(d, d => d[1]))])
-            .range([self.inner_height, 0]);
+        self.xaxis = d3.axisBottom( self.xscale )
+            .ticks(5)
+            .tickSizeOuter(0);
 
-        self.xaxis = self.chart.append('g')
-            .attr("transform", `translate(0, ${self.inner_height})`)
-            .call(d3.axisBottom(self.xscale)
-            .tickSizeOuter(0)
-            .tickFormat(self.year))
-            .call(g => g.selectAll(".domain").remove());
+        self.xaxis_group = self.chart.append('g')
+            .attr('transform', `translate(0, ${self.inner_height})`)
+            .call( self.xaxis );
 
-        self.yaxis = self.chart.append('g')
-            .call(d3.axisLeft(self.yscale)
-            .ticks(null, "s"))
-            .call(g => g.selectAll(".domain").remove());
+        self.yaxis = d3.axisLeft( self.yscale )
+            .tickSizeOuter(0);
+
+        self.yaxis_group = self.chart.append('g')
+            .call( self.yaxis );
     }
 
     update(){
       let self = this;
+
+      self.xscale.domain([0, d3.max(self.data, d => d.all)]);
+      self.yscale.domain(self.data.map(d => d.pref));
+
       self.render();
     }
 
     render(){
       let self = this;
 
-//      console.log(self.data);
-//      console.log(self.series);
+      self.chart.selectAll("rect")
+          .data(self.data)
+          .enter()
+          .append("rect")
+          .attr("x", 0)
+          .attr("y", d => self.yscale(d.pref))
+          .attr("width", d => self.xscale(d.all))
+          .attr("height", self.yscale.bandwidth());
 
-      self.chart.selectAll("g")
-          .data(self.series)
-          .enter().append("g")
-            .attr("fill", function(d) { return self.color(d.key); } )
-          .selectAll("rect")
-          .data(function(d) { return d; })
-      //    .enter().append("rect")
-          .join("rect")
-            .attr("x", function(d) { return self.xscale(d.data.year); } )
-  //          .attr("y", 0)
-            .attr("y", function(d) { return self.yscale(d[0]); } )
-        //    .attr("fill", d => self.color(d.key))
-            .attr("width", self.xscale.bandwidth())
-            .attr("height", function(d) { return self.yscale(d[1]) - self.yscale(d[0]); } );
-
-
-
-
-  //    self.xaxis
-//          .call( self.xaxis );
-//      self.yaxis
-  //        .call( self.yaxis );
+      self.xaxis_group
+          .call( self.xaxis );
+      self.yaxis_group
+          .call( self.yaxis );
     }
+}
+
+class Map {
 }
