@@ -1,10 +1,33 @@
 <html>
     <head>
         <title>Final Task</title>
+        <style>
+      	 body {
+      	     font-family: system-ui;
+      	 }
+      	 #tooltip {
+      	     position: absolute;
+      	     opacity: 0;
+      	     background: #fff;
+      	     border: 1px solid #ddd;
+      	     font-size: 12px;
+      	     font-weight: 600;
+      	     padding: 2px 8px;
+      	 }
+      	 .tooltip-label {
+      	     font-weight: 500;
+      	     font-size: 11px;
+      	     color: #888;
+      	 }
+      	</style>
     </head>
     <body>
-      <svg id = "drawing_BarChart"></svg>
+      <p>The more suicides, the denser.
+        <br>Mouse over to see prefecture name and suicide rate per 100.000 people.
+      </p>
+      <div id="tooltip"></div>
       <svg id = "drawing_Map"></svg>
+      <svg id = "drawing_BarChart"></svg>
 	<script src="https://d3js.org/d3.v6.min.js"></script>
 	<script src="FinalTask_main.js"></script>
     </body>
